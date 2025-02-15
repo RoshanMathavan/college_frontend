@@ -8,6 +8,8 @@ import RecruitmentStatusTracker from './components/RecruitmentStatusTracker';
 import PlacementReportGenerator from './components/PlacementReportGenerator';
 import AcademicRecordsIntegration from './components/AcademicRecordsIntegration';
 import CompanyDatabaseIntegration from './components/CompanyDatabaseIntegration';
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
 import './App.css';
 
 function App() {
@@ -16,19 +18,23 @@ function App() {
       <div className="App">
         <nav>
           <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/applications">Applications</Link></li>
-            <li><Link to="/interviews">Interviews</Link></li>
-            <li><Link to="/companies">Companies</Link></li>
-            <li><Link to="/placement-drives">Placement Drives</Link></li>
-            <li><Link to="/recruitment-status">Recruitment Status</Link></li>
-            <li><Link to="/reports">Reports</Link></li>
-            <li><Link to="/academic-records">Academic Records</Link></li>
-            <li><Link to="/company-database">Company Database</Link></li>
+            <li className="nav-item"><Link to="/">Home</Link></li>
+            <li className="nav-item"><Link to="/applications">Applications</Link></li>
+            <li className="nav-item"><Link to="/interviews">Interviews</Link></li>
+            <li className="nav-item"><Link to="/companies">Companies</Link></li>
+            <li className="nav-item"><Link to="/placement-drives">Placement Drives</Link></li>
+            <li className="nav-item"><Link to="/recruitment-status">Recruitment Status</Link></li>
+            <li className="nav-item"><Link to="/reports">Reports</Link></li>
+            <li className="nav-item"><Link to="/academic-records">Academic Records</Link></li>
+            <li className="nav-item"><Link to="/company-database">Company Database</Link></li>
+            <li className="nav-item auth-highlight"><Link to="/login">Login</Link></li>
+            <li className="nav-item auth-highlight"><Link to="/register">Register</Link></li>
           </ul>
         </nav>
         <Routes>
           <Route path="/applications" element={<ApplicationTracker />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/interviews" element={<InterviewScheduler />} />
           <Route path="/companies" element={<CompanyCoordinator />} />
           <Route path="/placement-drives" element={<PlacementDriveManager />} />
