@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AddStudent from "../components/AddStudent";
-import { addCompany } from "../services/api"; // Use centralized API utility
+import { createCompany } from "../services/api"; // Use centralized API utility
 
 function AdminDashboard() {
   const [companyName, setCompanyName] = useState("");
@@ -20,7 +20,7 @@ function AdminDashboard() {
       }
 
       const jobPostingArray = jobPostings.split(",").map((job) => job.trim());
-      const response = await addCompany({ companyName, jobPostings: jobPostingArray });
+      const response = await createCompany({ companyName, jobPostings: jobPostingArray });
 
       setMessage("Company added successfully!");
       setCompanyName("");

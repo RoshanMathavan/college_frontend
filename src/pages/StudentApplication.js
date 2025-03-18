@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./StudentApplication.css";
 
 const StudentApplication = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     resume: "",
+    course: "",
+    phone: ""
   });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,86 +22,148 @@ const StudentApplication = () => {
     e.preventDefault();
     setMessage("");
     setError("");
+    setLoading(true);
 
     // Basic input validation
     if (!formData.name || !formData.email || !formData.resume) {
       setError("All fields are required.");
+      setLoading(false);
       return;
     }
 
     try {
-      await axios.post("http://localhost:5000/api/students", formData);
+      await axios.post("https://collegeplacementmanagementsystem-1.onrender.com/api/students", formData);
       setMessage("Application submitted successfully!");
-      setFormData({ name: "", email: "", resume: "" }); // Clear the form
+      setFormData({ name: "", email: "", resume: "", course: "", phone: "" }); // Clear the form
     } catch (err) {
       console.error("Error submitting application:", err);
       setError("Failed to submit application. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="p-6 bg-white shadow-md rounded-md w-full max-w-md"
-      >
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Student Application</h2>
+    <div className="application-container">
+      <div className="application-header">
+        <h1 className="application-title">Student Application</h1>
+        <p className="application-subtitle">Submit your details to apply for placement opportunities</p>
+      </div>
 
-        {message && <p className="text-green-500 mb-4">{message}</p>}
-        {error && <p className="text-red-500 mb-4">{error}</p>}
+      <div className="application-form-container">
+        <form onSubmit={handleSubmit}>
+          {message && <div className="message success-message">{message}</div>}
+          {error && <div className="message error-message">{error}</div>}
 
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-gray-700 mb-2">
-            Name
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter your name"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:border-blue-500"
-          />
+          <div className="form-group">
+            <label htmlFor="name" className="form-label">Full Name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter your full name"
+              className="form-input"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="email" className="form-label">Email Address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email address"
+              className="form-input"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="phone" className="form-label">Phone Number</label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Enter your phone number"
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="course" className="form-label">Course/Program</label>
+            <input
+              id="course"
+              name="course"
+              type="text"
+              value={formData.course}
+              onChange={handleChange}
+              placeholder="Enter your course or program"
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="resume" className="form-label">Resume URL</label>
+            <input
+              id="resume"
+              name="resume"
+              type="url"
+              value={formData.resume}
+              onChange={handleChange}
+              placeholder="Paste your resume link (Google Drive, Dropbox, etc.)"
+              className="form-input"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="submit-button"
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Submit Application"}
+          </button>
+        </form>
+      </div>
+
+      <div className="application-info">
+        <h3 className="info-title">Application Process</h3>
+
+        <div className="info-item">
+          <div className="info-icon">1</div>
+          <div className="info-content">
+            <p className="info-text">Submit your application with all required details</p>
+          </div>
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 mb-2">
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:border-blue-500"
-          />
+        <div className="info-item">
+          <div className="info-icon">2</div>
+          <div className="info-content">
+            <p className="info-text">Your application will be reviewed by the placement cell</p>
+          </div>
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="resume" className="block text-gray-700 mb-2">
-            Resume URL
-          </label>
-          <input
-            id="resume"
-            name="resume"
-            type="text"
-            value={formData.resume}
-            onChange={handleChange}
-            placeholder="Paste your resume link"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:border-blue-500"
-          />
+        <div className="info-item">
+          <div className="info-icon">3</div>
+          <div className="info-content">
+            <p className="info-text">If shortlisted, you'll receive notifications for upcoming placement drives</p>
+          </div>
         </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-        >
-          Submit
-        </button>
-      </form>
+        <div className="info-item">
+          <div className="info-icon">4</div>
+          <div className="info-content">
+            <p className="info-text">Participate in interviews and assessments with potential employers</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
